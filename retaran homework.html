@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ustoz Restorani - Menu</title>
+    <!-- FontAwesome & Google Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 15px;
+            padding-bottom: 140px;
+            position: relative;
+        }
+
+        .menu-container {
+            width: 100%;
+            max-width: 1050px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            padding: 25px 20px;
+            border: 2px solid #d4af37;
+            margin-top: 10px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px dashed #d4af37;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: #8b0000;
+            font-size: clamp(22px, 5vw, 36px);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            color: #555;
+            font-style: italic;
+            margin-top: 4px;
+            font-size: clamp(12px, 3vw, 15px);
+        }
+
+        /* Navigation (Scrollable Tab-bar) */
+        .nav-tabs-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+        }
+
+        .nav-tabs-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: flex-start;
+            gap: 8px;
+            width: max-content;
+            margin: 0 auto;
+        }
+
+        .tab-btn {
+            padding: 10px 16px;
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: clamp(11px, 2.5vw, 13px);
+            color: #444;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn:hover {
+            background: #d4af37;
+            color: #fff;
+            border-color: #d4af37;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #8b0000, #b22222);
+            color: #ffffff;
+            border-color: #8b0000;
+            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.3);
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+            animation: slideUpFade 0.4s ease-out forwards;
+        }
+
+        .page-content h2 {
+            color: #8b0000;
+            font-size: clamp(18px, 4vw, 24px);
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .page-content h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: #d4af37;
+            margin: 6px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Grid Layout */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+        }
+
+        .menu-item {
+            background: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            border-left: 4px solid #d4af37;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-left-color: #8b0000;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .item-price {
+            color: #8b0000;
+            background: #fff5f5;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            border: 1px solid #ffe0e0;
+            white-space: nowrap;
+        }
+
+        .item-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            padding-top: 8px;
+            border-top: 1px dashed #eee;
+        }
+
+        .prep-time {
+            font-size: 11px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f8f8;
+            padding: 2px 6px;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .qty-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: none;
+            background: #8b0000;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.9);
+        }
+
+        .qty-count {
+            font-weight: 600;
+            font-size: 13px;
+            min-width: 14px;
+            text-align: center;
+        }
+
+        /* Cart Panel */
+        .cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 32, 39, 0.98);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid #d4af37;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 90;
+            color: #fff;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
+        }
+
+        .cart-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .cart-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-detail label {
+            font-size: 10px;
+            color: #d4af37;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .cart-detail span {
+            font-size: clamp(14px, 3.5vw, 18px);
+            font-weight: 700;
+        }
+
+        .order-btn {
+            background: linear-gradient(135deg, #d4af37, #aa7c11);
+            color: #fff;
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: clamp(13px, 3vw, 15px);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            white-space: nowrap;
+        }
+
+        .order-btn:hover {
+            background: linear-gradient(135deg, #8b0000, #b22222);
+        }
+
+        /* Staff Button */
+        .staff-btn-container {
+            position: fixed;
+            bottom: 75px;
+            right: 15px;
+            z-index: 89;
+        }
+
+        .staff-trigger-btn {
+            background: linear-gradient(135deg, #d4af37, #aa7c11);
+            color: #fff;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #7a5807;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+            padding: 15px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #fff;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border: 2px solid #d4af37;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            color: #8b0000;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0e6d2;
+            padding-bottom: 8px;
+        }
+
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .staff-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: #faf7f2;
+            border-radius: 10px;
+            border-left: 4px solid #d4af37;
+        }
+
+        .staff-icon {
+            width: 36px;
+            height: 36px;
+            background: #8b0000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .staff-info h4 {
+            color: #222;
+            font-size: 14px;
+        }
+
+        .staff-info p {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .staff-badge {
+            margin-left: auto;
+            background: #e6c875;
+            color: #4a3800;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 8px;
+                padding-bottom: 135px;
+            }
+
+            .menu-container {
+                padding: 15px 10px;
+                border-radius: 15px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-bar {
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px 15px;
+            }
+
+            .cart-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .order-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .staff-btn-container {
+                bottom: 115px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <header>
+            <h1>Ustoz Restorani</h1>
+            <p>National & European Cuisine Menu</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs-wrapper">
+            <nav class="nav-tabs">
+                <button class="tab-btn active" onclick="openPage('page1', this)">1. Main Courses</button>
+                <button class="tab-btn" onclick="openPage('page2', this)">2. Soups & Kebabs</button>
+                <button class="tab-btn" onclick="openPage('page3', this)">3. Salads & Appetizers</button>
+                <button class="tab-btn" onclick="openPage('page4', this)">4. Beverages</button>
+                <button class="tab-btn" onclick="openPage('page5', this)">5. Desserts</button>
+            </nav>
+        </div>
+
+        <!-- PAGE 1: MAIN COURSES -->
+        <div id="page1" class="page-content active">
+            <h2>Main Courses</h2>
+            <div class="menu-grid">
+                <div class="menu-item" data-id="1" data-name="Wedding Plov" data-price="45000" data-time="20">
+                    <div>
+                        <div class="item-header"><span class="item-name">Wedding Plov</span><span class="item-price">45,000 UZS</span></div>
+                        <p class="item-desc">Lazer rice, tender beef, horse sausage (kazi), quail eggs & garlic</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 20 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(1, -1)">-</button>
+                            <span class="qty-count" id="qty-1">0</span>
+                            <button class="qty-btn" onclick="changeQty(1, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="2" data-name="Choyxona Plov" data-price="42000" data-time="20">
+                    <div>
+                        <div class="item-header"><span class="item-name">Choyxona Plov</span><span class="item-price">42,000 UZS</span></div>
+                        <p class="item-desc">Devzira rice, juicy lamb meat, and traditional tail fat</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 20 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(2, -1)">-</button>
+                            <span class="qty-count" id="qty-2">0</span>
+                            <button class="qty-btn" onclick="changeQty(2, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="3" data-name="Kazan Kabob" data-price="65000" data-time="30">
+                    <div>
+                        <div class="item-header"><span class="item-name">Kazan Kabob</span><span class="item-price">65,000 UZS</span></div>
+                        <p class="item-desc">Fried spiced lamb served with crispy golden potatoes</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 30 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(3, -1)">-</button>
+                            <span class="qty-count" id="qty-3">0</span>
+                            <button class="qty-btn" onclick="changeQty(3, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="4" data-name="Tandoor Somsa" data-price="12000" data-time="15">
+                    <div>
+                        <div class="item-header"><span class="item-name">Tandoor Somsa</span><span class="item-price">12,000 UZS</span></div>
+                        <p class="item-desc">Crispy oven pastry filled with minced beef and onions</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 15 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(4, -1)">-</button>
+                            <span class="qty-count" id="qty-4">0</span>
+                            <button class="qty-btn" onclick="changeQty(4, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="5" data-name="Tashkent Naryn" data-price="40000" data-time="15">
+                    <div>
+                        <div class="item-header"><span class="item-name">Tashkent Naryn</span><span class="item-price">40,000 UZS</span></div>
+                        <p class="item-desc">Hand-cut noodles mixed with shredded horse meat & hot broth</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 15 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(5, -1)">-</button>
+                            <span class="qty-count" id="qty-5">0</span>
+                            <button class="qty-btn" onclick="changeQty(5, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="6" data-name="Beshbarmak" data-price="55000" data-time="25">
+                    <div>
+                        <div class="item-header"><span class="item-name">Beshbarmak</span><span class="item-price">55,000 UZS</span></div>
+                        <p class="item-desc">Flat pasta sheets topped with boiled beef, horse meat & onion gravy</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 25 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(6, -1)">-</button>
+                            <span class="qty-count" id="qty-6">0</span>
+                            <button class="qty-btn" onclick="changeQty(6, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: SOUPS & KEBABS -->
+        <div id="page2" class="page-content">
+            <h2>Soups & Kebabs</h2>
+            <div class="menu-grid">
+                <div class="menu-item" data-id="7" data-name="Classic Shurpa" data-price="30000" data-time="15">
+                    <div>
+                        <div class="item-header"><span class="item-name">Classic Shurpa</span><span class="item-price">30,000 UZS</span></div>
+                        <p class="item-desc">Lamb broth soup cooked with carrots, potatoes & fresh herbs</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 15 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(7, -1)">-</button>
+                            <span class="qty-count" id="qty-7">0</span>
+                            <button class="qty-btn" onclick="changeQty(7, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="8" data-name="Homemade Lagman" data-price="35000" data-time="20">
+                    <div>
+                        <div class="item-header"><span class="item-name">Homemade Lagman</span><span class="item-price">35,000 UZS</span></div>
+                        <p class="item-desc">Hand-pulled noodles with savory beef and vegetable stew</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 20 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(8, -1)">-</button>
+                            <span class="qty-count" id="qty-8">0</span>
+                            <button class="qty-btn" onclick="changeQty(8, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="9" data-name="Mastava Soup" data-price="28000" data-time="15">
+                    <div>
+                        <div class="item-header"><span class="item-name">Mastava Soup</span><span class="item-price">28,000 UZS</span></div>
+                        <p class="item-desc">Hearty rice & beef soup served with fresh cilantro & strained yogurt</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 15 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(9, -1)">-</button>
+                            <span class="qty-count" id="qty-9">0</span>
+                            <button class="qty-btn" onclick="changeQty(9, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="10" data-name="Minced Meat Kebab" data-price="16000" data-time="18">
+                    <div>
+                        <div class="item-header"><span class="item-name">Minced Kebab</span><span class="item-price">16,000 UZS</span></div>
+                        <p class="item-desc">Juicy grilled ground beef skewer seasoned with native spices</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 18 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(10, -1)">-</button>
+                            <span class="qty-count" id="qty-10">0</span>
+                            <button class="qty-btn" onclick="changeQty(10, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="11" data-name="Tika Beef Kebab" data-price="20000" data-time="20">
+                    <div>
+                        <div class="item-header"><span class="item-name">Tika Beef Kebab</span><span class="item-price">20,000 UZS</span></div>
+                        <p class="item-desc">Charcoal-grilled tender beef chunks marinated in spices</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 20 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(11, -1)">-</button>
+                            <span class="qty-count" id="qty-11">0</span>
+                            <button class="qty-btn" onclick="changeQty(11, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="12" data-name="Chicken Kebab" data-price="15000" data-time="15">
+                    <div>
+                        <div class="item-header"><span class="item-name">Chicken Kebab</span><span class="item-price">15,000 UZS</span></div>
+                        <p class="item-desc">Tender marinated chicken breast skewered & grilled over charcoal</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 15 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(12, -1)">-</button>
+                            <span class="qty-count" id="qty-12">0</span>
+                            <button class="qty-btn" onclick="changeQty(12, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: SALADS & APPETIZERS -->
+        <div id="page3" class="page-content">
+            <h2>Salads & Appetizers</h2>
+            <div class="menu-grid">
+                <div class="menu-item" data-id="13" data-name="Achichuk Salad" data-price="12000" data-time="8">
+                    <div>
+                        <div class="item-header"><span class="item-name">Achichuk Salad</span><span class="item-price">12,000 UZS</span></div>
+                        <p class="item-desc">Thinly sliced fresh tomatoes, cucumbers & onions</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 8 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(13, -1)">-</button>
+                            <span class="qty-count" id="qty-13">0</span>
+                            <button class="qty-btn" onclick="changeQty(13, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="14" data-name="Caesar Salad" data-price="28000" data-time="12">
+                    <div>
+                        <div class="item-header"><span class="item-name">Caesar Salad</span><span class="item-price">28,000 UZS</span></div>
+                        <p class="item-desc">Grilled chicken, Parmesan cheese, croutons & creamy Caesar dressing</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 12 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(14, -1)">-</button>
+                            <span class="qty-count" id="qty-14">0</span>
+                            <button class="qty-btn" onclick="changeQty(14, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="15" data-name="Suzma Dip" data-price="10000" data-time="5">
+                    <div>
+                        <div class="item-header"><span class="item-name">Suzma Dip</span><span class="item-price">10,000 UZS</span></div>
+                        <p class="item-desc">Thick strained yogurt blended with herbs & garlic</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 5 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(15, -1)">-</button>
+                            <span class="qty-count" id="qty-15">0</span>
+                            <button class="qty-btn" onclick="changeQty(15, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="16" data-name="Olivier Salad" data-price="22000" data-time="10">
+                    <div>
+                        <div class="item-header"><span class="item-name">Olivier Salad</span><span class="item-price">22,000 UZS</span></div>
+                        <p class="item-desc">Traditional potato salad with boiled beef, peas & mayonnaise</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 10 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(16, -1)">-</button>
+                            <span class="qty-count" id="qty-16">0</span>
+                            <button class="qty-btn" onclick="changeQty(16, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="17" data-name="Greek Salad" data-price="25000" data-time="10">
+                    <div>
+                        <div class="item-header"><span class="item-name">Greek Salad</span><span class="item-price">25,000 UZS</span></div>
+                        <p class="item-desc">Feta cheese, olives, bell peppers, fresh veggies & olive oil</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 10 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(17, -1)">-</button>
+                            <span class="qty-count" id="qty-17">0</span>
+                            <button class="qty-btn" onclick="changeQty(17, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="18" data-name="Choban Salad" data-price="18000" data-time="8">
+                    <div>
+                        <div class="item-header"><span class="item-name">Choban Salad</span><span class="item-price">18,000 UZS</span></div>
+                        <p class="item-desc">Finely diced garden vegetables with brinza cheese & olive oil</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 8 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(18, -1)">-</button>
+                            <span class="qty-count" id="qty-18">0</span>
+                            <button class="qty-btn" onclick="changeQty(18, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 4: BEVERAGES -->
+        <div id="page4" class="page-content">
+            <h2>Beverages</h2>
+            <div class="menu-grid">
+                <div class="menu-item" data-id="19" data-name="Green / Black Tea" data-price="5000" data-time="5">
+                    <div>
+                        <div class="item-header"><span class="item-name">Green / Black Tea</span><span class="item-price">5,000 UZS</span></div>
+                        <p class="item-desc">Freshly brewed teapot served with crystal sugar (navat)</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 5 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(19, -1)">-</button>
+                            <span class="qty-count" id="qty-19">0</span>
+                            <button class="qty-btn" onclick="changeQty(19, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="20" data-name="Lemon Tea" data-price="10000" data-time="5">
+                    <div>
+                        <div class="item-header"><span class="item-name">Lemon Tea</span><span class="item-price">10,000 UZS</span></div>
+                        <p class="item-desc">Hot brewed tea infused with fresh lemon slices & natural honey</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 5 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(20, -1)">-</button>
+                            <span class="qty-count" id="qty-20">0</span>
+                            <button class="qty-btn" onclick="changeQty(20, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="21" data-name="Coca-Cola 1L" data-price="15000" data-time="3">
+                    <div>
+                        <div class="item-header"><span class="item-name">Coca-Cola (1L)</span><span class="item-price">15,000 UZS</span></div>
+                        <p class="item-desc">Chilled carbonated soft drink</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 3 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(21, -1)">-</button>
+                            <span class="qty-count" id="qty-21">0</span>
+                            <button class="qty-btn" onclick="changeQty(21, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="22" data-name="Fanta 1L" data-price="15000" data-time="3">
+                    <div>
+                        <div class="item-header"><span class="item-name">Fanta (1L)</span><span class="item-price">15,000 UZS</span></div>
+                        <p class="item-desc">Refreshing orange-flavored carbonated drink</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 3 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(22, -1)">-</button>
+                            <span class="qty-count" id="qty-22">0</span>
+                            <button class="qty-btn" onclick="changeQty(22, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="23" data-name="Natural Juice 1L" data-price="20000" data-time="3">
+                    <div>
+                        <div class="item-header"><span class="item-name">Natural Juice</span><span class="item-price">20,000 UZS</span></div>
+                        <p class="item-desc">Premium fruit juice (Apple, Cherry, or Orange)</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 3 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(23, -1)">-</button>
+                            <span class="qty-count" id="qty-23">0</span>
+                            <button class="qty-btn" onclick="changeQty(23, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="24" data-name="Homemade Ayran" data-price="8000" data-time="3">
+                    <div>
+                        <div class="item-header"><span class="item-name">Homemade Ayran</span><span class="item-price">8,000 UZS</span></div>
+                        <p class="item-desc">Refreshing cold savory yogurt drink infused with mint</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 3 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(24, -1)">-</button>
+                            <span class="qty-count" id="qty-24">0</span>
+                            <button class="qty-btn" onclick="changeQty(24, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 5: DESSERTS -->
+        <div id="page5" class="page-content">
+            <h2>Desserts</h2>
+            <div class="menu-grid">
+                <div class="menu-item" data-id="25" data-name="Honey Cake (Medovik)" data-price="28000" data-time="10">
+                    <div>
+                        <div class="item-header"><span class="item-name">Honey Cake</span><span class="item-price">28,000 UZS</span></div>
+                        <p class="item-desc">Traditional layered honey cake with sour cream frosting</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 10 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(25, -1)">-</button>
+                            <span class="qty-count" id="qty-25">0</span>
+                            <button class="qty-btn" onclick="changeQty(25, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="26" data-name="Cheesecake" data-price="32000" data-time="10">
+                    <div>
+                        <div class="item-header"><span class="item-name">Cheesecake</span><span class="item-price">32,000 UZS</span></div>
+                        <p class="item-desc">Classic New York style cheesecake topped with strawberry sauce</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 10 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(26, -1)">-</button>
+                            <span class="qty-count" id="qty-26">0</span>
+                            <button class="qty-btn" onclick="changeQty(26, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="27" data-name="Baklava" data-price="25000" data-time="10">
+                    <div>
+                        <div class="item-header"><span class="item-name">Baklava (3 pcs)</span><span class="item-price">25,000 UZS</span></div>
+                        <p class="item-desc">Rich, sweet pastry made of layers of filo with chopped nuts & syrup</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 10 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(27, -1)">-</button>
+                            <span class="qty-count" id="qty-27">0</span>
+                            <button class="qty-btn" onclick="changeQty(27, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="28" data-name="Ice Cream Assortment" data-price="18000" data-time="5">
+                    <div>
+                        <div class="item-header"><span class="item-name">Ice Cream Assortment</span><span class="item-price">18,000 UZS</span></div>
+                        <p class="item-desc">3 scoops of chocolate, vanilla, and strawberry ice cream</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 5 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(28, -1)">-</button>
+                            <span class="qty-count" id="qty-28">0</span>
+                            <button class="qty-btn" onclick="changeQty(28, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="29" data-name="Napoleon Cake" data-price="26000" data-time="10">
+                    <div>
+                        <div class="item-header"><span class="item-name">Napoleon Cake</span><span class="item-price">26,000 UZS</span></div>
+                        <p class="item-desc">Flaky puff pastry slice layered with smooth vanilla custard</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 10 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(29, -1)">-</button>
+                            <span class="qty-count" id="qty-29">0</span>
+                            <button class="qty-btn" onclick="changeQty(29, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-item" data-id="30" data-name="Fruit Platter" data-price="40000" data-time="10">
+                    <div>
+                        <div class="item-header"><span class="item-name">Fruit Platter</span><span class="item-price">40,000 UZS</span></div>
+                        <p class="item-desc">Freshly sliced platter of seasonal fruits</p>
+                    </div>
+                    <div class="item-footer">
+                        <span class="prep-time"><i class="fa-regular fa-clock"></i> 10 mins</span>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="changeQty(30, -1)">-</button>
+                            <span class="qty-count" id="qty-30">0</span>
+                            <button class="qty-btn" onclick="changeQty(30, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Cart Bar -->
+    <div class="cart-bar">
+        <div class="cart-info">
+            <div class="cart-detail">
+                <label>Est. Time:</label>
+                <span id="totalTime">0 mins</span>
+            </div>
+            <div class="cart-detail">
+                <label>Total:</label>
+                <span id="totalPrice" style="color: #ffd700;">0 UZS</span>
+            </div>
+        </div>
+        <button class="order-btn" onclick="placeOrder()"><i class="fa-solid fa-check"></i> Place Order</button>
+    </div>
+
+    <!-- Staff Button -->
+    <div class="staff-btn-container">
+        <button class="staff-trigger-btn" onclick="toggleStaffModal()">
+            <i class="fa-solid fa-users"></i>
+            <span>Our Staff</span>
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="staffModal">
+        <div class="modal-card">
+            <span class="close-btn" onclick="toggleStaffModal()">&times;</span>
+            <h3 class="modal-title"><i class="fa-solid fa-utensils"></i> Restaurant Staff</h3>
+            
+            <div class="staff-list">
+                <div class="staff-card" style="border-left-color: #8b0000;">
+                    <div class="staff-icon" style="background: #8b0000;"><i class="fa-solid fa-user-tie"></i></div>
+                    <div class="staff-info">
+                        <h4>Sobirov Mirjalol</h4>
+                        <p>General Manager</p>
+                    </div>
+                    <span class="staff-badge" style="background: #ffd700; color: #000;">Owner</span>
+                </div>
+
+                <div class="staff-card" style="border-left-color: #d4af37;">
+                    <div class="staff-icon" style="background: #d4af37;"><i class="fa-solid fa-hat-chef"></i></div>
+                    <div class="staff-info">
+                        <h4>Hasan</h4>
+                        <p>Head Chef</p>
+                    </div>
+                    <span class="staff-badge">Chef</span>
+                </div>
+
+                <div class="staff-card">
+                    <div class="staff-icon"><i class="fa-solid fa-concierge-bell"></i></div>
+                    <div class="staff-info">
+                        <h4>Husan</h4>
+                        <p>Senior Waiter</p>
+                    </div>
+                    <span class="staff-badge" style="background: #e2e8f0; color: #333;">Waiter</span>
+                </div>
+
+                <div class="staff-card">
+                    <div class="staff-icon"><i class="fa-solid fa-concierge-bell"></i></div>
+                    <div class="staff-info">
+                        <h4>Shohruh</h4>
+                        <p>Service Specialist</p>
+                    </div>
+                    <span class="staff-badge" style="background: #e2e8f0; color: #333;">Waiter</span>
+                </div>
+
+                <div class="staff-card">
+                    <div class="staff-icon"><i class="fa-solid fa-concierge-bell"></i></div>
+                    <div class="staff-info">
+                        <h4>Alijon</h4>
+                        <p>Guest Relations</p>
+                    </div>
+                    <span class="staff-badge" style="background: #e2e8f0; color: #333;">Waiter</span>
+                </div>
+
+                <div class="staff-card">
+                    <div class="staff-icon"><i class="fa-solid fa-concierge-bell"></i></div>
+                    <div class="staff-info">
+                        <h4>Javohir</h4>
+                        <p>Experienced Waiter</p>
+                    </div>
+                    <span class="staff-badge" style="background: #e2e8f0; color: #333;">Waiter</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let cart = {};
+
+        function openPage(pageId, btnElement) {
+            let pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.remove('active'));
+
+            let buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        function toggleStaffModal() {
+            const modal = document.getElementById('staffModal');
+            modal.classList.toggle('active');
+        }
+
+        function changeQty(id, change) {
+            const itemElement = document.querySelector(`.menu-item[data-id='${id}']`);
+            const name = itemElement.getAttribute('data-name');
+            const price = parseInt(itemElement.getAttribute('data-price'));
+            const time = parseInt(itemElement.getAttribute('data-time'));
+
+            if (!cart[id]) {
+                cart[id] = { name: name, price: price, time: time, qty: 0 };
+            }
+
+            cart[id].qty += change;
+
+            if (cart[id].qty < 0) cart[id].qty = 0;
+
+            document.getElementById(`qty-${id}`).innerText = cart[id].qty;
+
+            updateCartSummary();
+        }
+
+        function updateCartSummary() {
+            let totalPrice = 0;
+            let maxTime = 0;
+            let totalItems = 0;
+
+            for (let id in cart) {
+                if (cart[id].qty > 0) {
+                    totalPrice += cart[id].price * cart[id].qty;
+                    totalItems += cart[id].qty;
+                    if (cart[id].time > maxTime) {
+                        maxTime = cart[id].time;
+                    }
+                }
+            }
+
+            document.getElementById('totalPrice').innerText = totalPrice.toLocaleString('en-US') + " UZS";
+            document.getElementById('totalTime').innerText = totalItems > 0 ? maxTime + " mins" : "0 mins";
+        }
+
+        function placeOrder() {
+            let totalSum = document.getElementById('totalPrice').innerText;
+            let totalTime = document.getElementById('totalTime').innerText;
+
+            if (totalSum === "0 UZS") {
+                alert("Please select at least one item from the menu first!");
+                return;
+            }
+
+            let orderText = "Thank you! Your order has been placed successfully.\n\n";
+            orderText += "Selected Items:\n";
+            for (let id in cart) {
+                if (cart[id].qty > 0) {
+                    orderText += `- ${cart[id].name}: ${cart[id].qty} pc(s)\n`;
+                }
+            }
+            orderText += `\nTotal Amount: ${totalSum}`;
+            orderText += `\nEstimated Time: approximately ${totalTime}`;
+            orderText += "\n\nWe are pleased to serve you at Ustoz Restorani!";
+
+            alert(orderText);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('staffModal');
+            if (event.target === modal) {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
